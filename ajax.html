@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="loadBtn">load</button>
+    <input id="urlInput" placeholder="url">
+    <div id="responseDiv">
+
+    </div>
+    <script>
+        loadBtn.addEventListener("click", () => {
+            const request = new XMLHttpRequest()
+            request.open("GET", urlInput.value, true)
+            request.addEventListener('', () => {
+                const users = JSON.parse(request.response)
+                users.forEach(element => {
+                    responseDiv.innerHTML += ` <div style="border: 1px solid black;">
+                            <div> - userId : <span> ${element.userId}</span> </div>
+                            <div> - id : <span> ${element.id}</span> </div>
+                            <div> - title : <span>${element.title}</span> </div>
+                            <div> - completed : <span> ${element.completed}</span> </div>
+                        </div>`
+                });
+            })
+            request.send()
+
+
+        })
+    </script>
+</body>
+
+</html>

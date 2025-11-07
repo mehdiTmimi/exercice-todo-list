@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Todo List Template</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css" />
+    <script defer src="js/main.js"></script>
+</head>
+
+<body>
+    <div class="app" id="x">
+        <header class="app__header">
+            <h1 class="app__title">Todos</h1>
+            <p class="app__subtitle">Static HTML/CSS template with mock data (add/remove/list)</p>
+        </header>
+
+        <main class="app__main">
+            <!-- Section: Form -->
+            <section class="panel" aria-labelledby="add-todo-title">
+                <h2 id="add-todo-title" class="panel__title">Add a todo</h2>
+                
+                    <div style="display: flex;flex-direction: column;">
+                        <div class="field">
+                            <label for="todo-name">Name</label>
+                            <input onpl id="todo-name" name="name" type="text" placeholder="e.g., Buy groceries" required />
+                        </div>
+                        <div class="field">
+                            <label for="todo-date">Date</label>
+                            <input id="todo-date" name="date" type="date" required />
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn--primary" id="btnAdd" type="submit" aria-disabled="true"
+                            title="Static template — add requires JavaScript">Add</button>
+                        
+                        <button class="btn btn--secondary" type="submit" aria-disabled="true"
+                            title="Static template — add requires JavaScript" 
+                            onclick="resetForm()"
+                            >reset</button>
+                    </div>
+              
+                <p class="hint" aria-hidden="true">Connect JavaScript to make the form functional.</p>
+            </section>
+
+            <!-- Section: List -->
+            <section class="panel" aria-labelledby="list-title">
+                <h2 id="list-title" class="panel__title">Your todos</h2>
+                <ul class="todo-list" >
+                    
+                </ul>
+            </section>
+        </main>
+
+        <footer class="app__footer">
+            <small>Tip: This is a static template. Add JavaScript to wire up real add/remove behavior.</small>
+        </footer>
+    </div>
+</body>
+
+</html>
