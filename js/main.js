@@ -1,22 +1,24 @@
 const resetForm = () => {
-    document.getElementById('todo-name').value = ''; 
+    document.getElementById('todo-name').value = '';
     document.getElementById('todo-date').value = '';
 }
-btnAdd.addEventListener('click',()=>{
+btnAdd.addEventListener('click', () => {
     //recuperation des valeurs saisies
     let todo_name = document.getElementById("todo-name").value
     let todo_date = document.getElementById("todo-date").value
     // verification
-    if(!todo_name || !todo_date){ // todo_name != null , undefined, NaN, "",0 , false
+    if (!todo_name || !todo_date) { // todo_name != null , undefined, NaN, "",0 , false
         return alert("please complete all the fields")
-       
+
     }
     // call HTTP Request
+    const obj = { name: todo_name, date: todo_date }
+    addTodoToServer(obj, (todoFromServer) => {
+        addTodoToList(todoFromServer.name, todoFromServer.date)
+        resetForm()
+    }, () => alert("error from server"))
 
-    // si reussi
-    addTodoToList(todo_name,todo_date)
-    // vider le formulaire
-    resetForm()
+
 })
 const addTodoToList = (name, date) => {
     //creation des elements
@@ -27,8 +29,8 @@ const addTodoToList = (name, date) => {
     const time = document.createElement("time")
 
     // buttonDelete.setAttribute("onclick", "console.log('ok')")
-    buttonDelete.addEventListener("click",()=>{
-    //    li.remove()
+    buttonDelete.addEventListener("click", () => {
+        //    li.remove()
         buttonDelete.parentElement.remove()
     })
     //liaison pere fils
@@ -78,3 +80,53 @@ const addTodoToList2 = (name, date) => {
     `
     document.querySelector(".todo-list").innerHTML += newLi
 }
+
+
+
+const getTodosFromServerSynchrone = () => {
+    const request = new XMLHttpRequest()
+    request.open("GET", "http://localhost:3000/todos", false) // sync
+    request.send();
+    const tab = JSON.parse(request.response)
+    tab.forEach(element => {
+        console.log(element)
+        addTodoToList(element.name, element.date)
+    });
+
+}
+const getTodosFromServerAsynchrone = () => {
+    const xhr = new XMLHttpRequest()
+    xhr.open("GET", "http://localhost:3000/todos", true) // sync
+    xhr.addEventListener("load", () => {// callback a execute quand la reponse est recue
+        if (xhr.status == 200) {
+            const tab = JSON.parse(xhr.response)
+            tab.forEach(element => {
+
+                addTodoToList(element.name, element.date)
+            });
+        }
+        else {
+            alert("error")
+        }
+    })
+    xhr.send();
+
+    console.log("fin de la methode")
+
+
+
+}
+const addTodoToServer = (todo, onsuccess, onfail) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open("POST", "http://localhost:3000/todos", true)
+    xhr.setRequestHeader("Content-Type", "application/json")
+    xhr.addEventListener("load", () => {
+        if (xhr.status == 201) {
+            const todoFromServer = JSON.parse(xhr.response)
+            onsuccess(todoFromServer)
+        }
+        else onfail()
+    })
+    xhr.send(JSON.stringify(todo))
+}
+getTodosFromServerAsynchrone()
